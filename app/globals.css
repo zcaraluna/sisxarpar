@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #0a1c2e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a1c2e;
+    --foreground: #f0f4f8;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Estilos para react-select */
+.react-select-container {
+  color: #0a1c2e;
+}
+
+.react-select__control {
+  border-color: #cbd5e1 !important;
+  min-height: 42px;
+}
+
+.react-select__control:hover {
+  border-color: #1e3a8a !important;
+}
+
+.react-select__control--is-focused {
+  border-color: #1e3a8a !important;
+  box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2) !important;
+}
+
+.react-select__single-value {
+  color: #0a1c2e !important;
+}
+
+.react-select__placeholder {
+  color: #64748b !important;
+}
+
+.react-select__option {
+  color: #0a1c2e !important;
+}
+
+.react-select__option--is-focused {
+  background-color: #e0e7ff !important;
+}
+
+.react-select__option--is-selected {
+  background-color: #1e3a8a !important;
+  color: white !important;
+}
+

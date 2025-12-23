@@ -1,0 +1,234 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Rol {
+  ALUMNO
+  ENCARGADO
+  CAJERO
+  PROFESOR
+  JEFE_ESTUDIOS
+  ADMIN
+}
+
+enum EstadoInscripcion {
+  PENDIENTE
+  INSCRITO
+  CANCELADO
+}
+
+enum EstadoFactura {
+  PENDIENTE
+  PAGADA
+  CANCELADA
+}
+
+enum TipoFacturacion {
+  PROPIO
+  TERCERO
+}
+
+model Usuario {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String
+  nombre        String
+  apellido      String
+  cedula        String?  @unique
+  telefono      String?
+  direccion     String?
+  rol           Rol      @default(ALUMNO)
+  activo        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relaciones como Alumno
+  inscripciones Inscripcion[]
+  notasComoAlumno Nota[] @relation("NotaAlumno")
+
+  // Relaciones como Profesor
+  materiasAsignadas MateriaProfesor[]
+  notasComoProfesor Nota[] @relation("NotaProfesor")
+
+  // Relaciones como Cajero
+  facturasGeneradas Factura[]
+
+  // Relaciones como Jefe de Estudios
+  certificadosGenerados Certificado[] @relation("CertificadoJefeEstudios")
+  
+  // Relaciones como Alumno en Certificados
+  certificadosRecibidos Certificado[] @relation("CertificadoAlumno")
+
+  @@map("usuarios")
+}
+
+model Escuela {
+  id          String   @id @default(cuid())
+  nombre      String   @unique
+  codigo      String   @unique
+  descripcion String?
+  activa      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  cursos Cursos[]
+
+  @@map("escuelas")
+}
+
+model Cursos {
+  id          String   @id @default(cuid())
+  nombre      String
+  codigo      String
+  descripcion String?
+  costo       Decimal  @default(0)
+  activo      Boolean  @default(true)
+  escuelaId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  escuela      Escuela      @relation(fields: [escuelaId], references: [id], onDelete: Cascade)
+  materias     Materia[]
+  inscripciones Inscripcion[]
+  certificados Certificado[]
+
+  @@unique([escuelaId, codigo])
+  @@map("cursos")
+}
+
+model Materia {
+  id          String   @id @default(cuid())
+  nombre      String
+  codigo      String
+  descripcion String?
+  activa      Boolean  @default(true)
+  cursoId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  curso              Cursos              @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+  profesores         MateriaProfesor[]
+  notas              Nota[]
+  certificadosMaterias CertificadoMateria[]
+
+  @@unique([cursoId, codigo])
+  @@map("materias")
+}
+
+model MateriaProfesor {
+  id        String   @id @default(cuid())
+  materiaId String
+  profesorId String
+  createdAt DateTime @default(now())
+
+  materia   Materia  @relation(fields: [materiaId], references: [id], onDelete: Cascade)
+  profesor  Usuario  @relation(fields: [profesorId], references: [id], onDelete: Cascade)
+
+  @@unique([materiaId, profesorId])
+  @@map("materia_profesor")
+}
+
+model Inscripcion {
+  id              String            @id @default(cuid())
+  alumnoId        String
+  cursoId         String
+  estado          EstadoInscripcion @default(PENDIENTE)
+  fechaInscripcion DateTime         @default(now())
+  observaciones   String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  alumno  Usuario  @relation(fields: [alumnoId], references: [id], onDelete: Cascade)
+  curso   Cursos   @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+  factura Factura?
+
+  @@unique([alumnoId, cursoId])
+  @@map("inscripciones")
+}
+
+model Factura {
+  id                String          @id @default(cuid())
+  numero            String          @unique
+  inscripcionId     String          @unique
+  cajeroId          String
+  monto             Decimal
+  tipoFacturacion   TipoFacturacion @default(PROPIO)
+  // Si es TERCERO, estos campos se usan
+  nombreTercero     String?
+  cedulaTercero     String?
+  direccionTercero  String?
+  estado            EstadoFactura   @default(PENDIENTE)
+  fechaEmision      DateTime        @default(now())
+  fechaPago         DateTime?
+  observaciones     String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  inscripcion Inscripcion @relation(fields: [inscripcionId], references: [id], onDelete: Cascade)
+  cajero      Usuario     @relation(fields: [cajeroId], references: [id])
+
+  @@map("facturas")
+}
+
+model Nota {
+  id          String   @id @default(cuid())
+  alumnoId    String
+  materiaId   String
+  profesorId  String
+  calificacion Decimal
+  periodo     String   // Ej: "2024-1", "2024-2"
+  fecha       DateTime  @default(now())
+  observaciones String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  alumno   Usuario  @relation("NotaAlumno", fields: [alumnoId], references: [id], onDelete: Cascade)
+  materia  Materia  @relation(fields: [materiaId], references: [id], onDelete: Cascade)
+  profesor Usuario  @relation("NotaProfesor", fields: [profesorId], references: [id])
+
+  @@unique([alumnoId, materiaId, periodo])
+  @@map("notas")
+}
+
+model Certificado {
+  id              String   @id @default(cuid())
+  numero          String   @unique
+  alumnoId        String
+  cursoId         String
+  jefeEstudiosId  String
+  fechaEmision    DateTime @default(now())
+  fechaFinalizacion DateTime
+  promedio        Decimal
+  observaciones   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  alumno        Usuario            @relation("CertificadoAlumno", fields: [alumnoId], references: [id], onDelete: Cascade)
+  curso         Cursos             @relation(fields: [cursoId], references: [id], onDelete: Cascade)
+  jefeEstudios  Usuario            @relation("CertificadoJefeEstudios", fields: [jefeEstudiosId], references: [id])
+  materias      CertificadoMateria[]
+
+  @@map("certificados")
+}
+
+model CertificadoMateria {
+  id           String   @id @default(cuid())
+  certificadoId String
+  materiaId    String
+  calificacion Decimal
+  aprobada     Boolean  @default(true)
+
+  certificado Certificado @relation(fields: [certificadoId], references: [id], onDelete: Cascade)
+  materia     Materia     @relation(fields: [materiaId], references: [id], onDelete: Cascade)
+
+  @@unique([certificadoId, materiaId])
+  @@map("certificado_materias")
+}
