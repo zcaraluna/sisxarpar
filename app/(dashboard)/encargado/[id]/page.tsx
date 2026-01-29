@@ -85,9 +85,9 @@ export default function InscripcionDetallePage() {
   };
 
   const estadoColors: Record<string, string> = {
-    PENDIENTE: "bg-yellow-100 text-yellow-800",
-    INSCRITO: "bg-green-100 text-green-800",
-    CANCELADO: "bg-red-100 text-red-800",
+    PENDIENTE: "bg-secondary text-secondary-foreground",
+    INSCRITO: "bg-primary text-primary-foreground",
+    CANCELADO: "bg-destructive text-destructive-foreground",
   };
 
   const estadoFacturaLabels: Record<string, string> = {
@@ -97,16 +97,16 @@ export default function InscripcionDetallePage() {
   };
 
   const estadoFacturaColors: Record<string, string> = {
-    PENDIENTE: "bg-yellow-100 text-yellow-800",
-    PAGADA: "bg-green-100 text-green-800",
-    CANCELADA: "bg-red-100 text-red-800",
+    PENDIENTE: "bg-secondary text-secondary-foreground",
+    PAGADA: "bg-primary text-primary-foreground",
+    CANCELADA: "bg-destructive text-destructive-foreground",
   };
 
   if (loading) {
     return (
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="text-center py-8">
-          <div className="text-navy-700">Cargando detalles...</div>
+          <div className="text-muted-foreground animate-pulse">Cargando detalles...</div>
         </div>
       </div>
     );
@@ -115,11 +115,11 @@ export default function InscripcionDetallePage() {
   if (error || !inscripcion) {
     return (
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-destructive/15 border border-destructive text-destructive px-4 py-3 rounded mb-4 text-sm">
           {error || "Inscripción no encontrada"}
         </div>
         <Link href="/encargado">
-          <Button variant="secondary">Volver a Inscripciones</Button>
+          <Button variant="outline">Volver a Inscripciones</Button>
         </Link>
       </div>
     );
@@ -127,107 +127,106 @@ export default function InscripcionDetallePage() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <div className="mb-6">
-        <Link href="/encargado">
-          <Button variant="secondary" className="mb-4">
-            ← Volver a Inscripciones
-          </Button>
-        </Link>
-        <h1 className="text-3xl font-bold text-navy-900">Detalles de Inscripción</h1>
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <Link href="/encargado">
+            <Button variant="ghost" className="-ml-3 mb-2 text-muted-foreground">
+              ← Volver a Inscripciones
+            </Button>
+          </Link>
+          <h1 className="text-3xl font-bold tracking-tight">Detalles de Inscripción</h1>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Información del Alumno */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-navy-900 mb-4">
+        <div className="bg-card border shadow-sm rounded-lg p-6">
+          <h2 className="text-lg font-semibold mb-4">
             Información del Alumno
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div>
-              <span className="text-sm font-medium text-navy-700">Nombre completo:</span>
-              <p className="text-navy-900">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Nombre completo</span>
+              <p className="text-foreground font-medium">
                 {inscripcion.alumno.nombre} {inscripcion.alumno.apellido}
               </p>
             </div>
             <div>
-              <span className="text-sm font-medium text-navy-700">Email:</span>
-              <p className="text-navy-900">{inscripcion.alumno.email}</p>
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Email</span>
+              <p className="text-foreground">{inscripcion.alumno.email}</p>
             </div>
             {inscripcion.alumno.cedula && (
               <div>
-                <span className="text-sm font-medium text-navy-700">Cédula:</span>
-                <p className="text-navy-900">{inscripcion.alumno.cedula}</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Cédula</span>
+                <p className="text-foreground">{inscripcion.alumno.cedula}</p>
               </div>
             )}
             {inscripcion.alumno.telefono && (
               <div>
-                <span className="text-sm font-medium text-navy-700">Teléfono:</span>
-                <p className="text-navy-900">{inscripcion.alumno.telefono}</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Teléfono</span>
+                <p className="text-foreground">{inscripcion.alumno.telefono}</p>
               </div>
             )}
             {inscripcion.alumno.direccion && (
               <div>
-                <span className="text-sm font-medium text-navy-700">Dirección:</span>
-                <p className="text-navy-900">{inscripcion.alumno.direccion}</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Dirección</span>
+                <p className="text-foreground">{inscripcion.alumno.direccion}</p>
               </div>
             )}
           </div>
         </div>
 
         {/* Información del Curso */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-navy-900 mb-4">
+        <div className="bg-card border shadow-sm rounded-lg p-6">
+          <h2 className="text-lg font-semibold mb-4">
             Información del Curso
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div>
-              <span className="text-sm font-medium text-navy-700">Escuela:</span>
-              <p className="text-navy-900">{inscripcion.curso.escuela.nombre}</p>
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Escuela</span>
+              <p className="text-foreground">{inscripcion.curso.escuela.nombre}</p>
             </div>
             <div>
-              <span className="text-sm font-medium text-navy-700">Curso:</span>
-              <p className="text-navy-900">{inscripcion.curso.nombre}</p>
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Curso</span>
+              <p className="text-foreground font-semibold">{inscripcion.curso.nombre}</p>
             </div>
             <div>
-              <span className="text-sm font-medium text-navy-700">Código:</span>
-              <p className="text-navy-900">{inscripcion.curso.codigo}</p>
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Código</span>
+              <p className="text-foreground font-mono text-sm">{inscripcion.curso.codigo}</p>
             </div>
             <div>
-              <span className="text-sm font-medium text-navy-700">Costo:</span>
-              <p className="text-navy-900 font-semibold">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Costo</span>
+              <p className="text-xl font-bold text-primary">
                 G. {inscripcion.curso.costo.toLocaleString()}
               </p>
             </div>
             {inscripcion.curso.descripcion && (
               <div>
-                <span className="text-sm font-medium text-navy-700">Descripción:</span>
-                <p className="text-navy-900">{inscripcion.curso.descripcion}</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Descripción</span>
+                <p className="text-muted-foreground text-sm">{inscripcion.curso.descripcion}</p>
               </div>
             )}
           </div>
         </div>
 
         {/* Estado de la Inscripción */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-navy-900 mb-4">
+        <div className="bg-card border shadow-sm rounded-lg p-6">
+          <h2 className="text-lg font-semibold mb-4">
             Estado de la Inscripción
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div>
-              <span className="text-sm font-medium text-navy-700">Estado:</span>
-              <div className="mt-1">
-                <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    estadoColors[inscripcion.estado]
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block mb-1">Estado actual</span>
+              <span
+                className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${estadoColors[inscripcion.estado]
                   }`}
-                >
-                  {estadoLabels[inscripcion.estado]}
-                </span>
-              </div>
+              >
+                {estadoLabels[inscripcion.estado]}
+              </span>
             </div>
             <div>
-              <span className="text-sm font-medium text-navy-700">Fecha de inscripción:</span>
-              <p className="text-navy-900">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Fecha de inscripción</span>
+              <p className="text-foreground">
                 {new Date(inscripcion.fechaInscripcion).toLocaleDateString("es-PY", {
                   year: "numeric",
                   month: "long",
@@ -237,8 +236,8 @@ export default function InscripcionDetallePage() {
             </div>
             {inscripcion.observaciones && (
               <div>
-                <span className="text-sm font-medium text-navy-700">Observaciones:</span>
-                <p className="text-navy-900 mt-1">{inscripcion.observaciones}</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Observaciones</span>
+                <p className="text-muted-foreground text-sm mt-1">{inscripcion.observaciones}</p>
               </div>
             )}
           </div>
@@ -246,95 +245,87 @@ export default function InscripcionDetallePage() {
 
         {/* Información de Factura */}
         {inscripcion.factura ? (
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-lg font-semibold text-navy-900 mb-4">
+          <div className="bg-card border shadow-sm rounded-lg p-6">
+            <h2 className="text-lg font-semibold mb-4">
               Información de Factura
             </h2>
-            <div className="space-y-3">
-              <div>
-                <span className="text-sm font-medium text-navy-700">Número de factura:</span>
-                <p className="text-navy-900 font-semibold">{inscripcion.factura.numero}</p>
-              </div>
-              <div>
-                <span className="text-sm font-medium text-navy-700">Estado:</span>
-                <div className="mt-1">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      estadoFacturaColors[inscripcion.factura.estado]
-                    }`}
-                  >
-                    {estadoFacturaLabels[inscripcion.factura.estado]}
-                  </span>
+            <div className="space-y-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Número de factura</span>
+                  <p className="text-foreground font-mono font-bold text-lg">{inscripcion.factura.numero}</p>
                 </div>
+                <span
+                  className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${estadoFacturaColors[inscripcion.factura.estado]
+                    }`}
+                >
+                  {estadoFacturaLabels[inscripcion.factura.estado]}
+                </span>
               </div>
               <div>
-                <span className="text-sm font-medium text-navy-700">Monto:</span>
-                <p className="text-navy-900 font-semibold">
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Monto total</span>
+                <p className="text-xl font-bold text-foreground">
                   G. {inscripcion.factura.monto.toLocaleString()}
                 </p>
               </div>
               <div>
-                <span className="text-sm font-medium text-navy-700">Tipo de facturación:</span>
-                <p className="text-navy-900">
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tipo de facturación</span>
+                <p className="text-muted-foreground text-sm">
                   {inscripcion.factura.tipoFacturacion === "PROPIO"
                     ? "A nombre del alumno"
                     : "A nombre de tercero"}
                 </p>
               </div>
               {inscripcion.factura.tipoFacturacion === "TERCERO" && (
-                <>
+                <div className="bg-muted/30 p-3 rounded-md space-y-2">
                   {inscripcion.factura.nombreTercero && (
                     <div>
-                      <span className="text-sm font-medium text-navy-700">Nombre del tercero:</span>
-                      <p className="text-navy-900">{inscripcion.factura.nombreTercero}</p>
+                      <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tercero</span>
+                      <p className="text-sm font-medium">{inscripcion.factura.nombreTercero}</p>
                     </div>
                   )}
                   {inscripcion.factura.cedulaTercero && (
                     <div>
-                      <span className="text-sm font-medium text-navy-700">Cédula del tercero:</span>
-                      <p className="text-navy-900">{inscripcion.factura.cedulaTercero}</p>
+                      <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">ID/RUC</span>
+                      <p className="text-sm font-medium">{inscripcion.factura.cedulaTercero}</p>
                     </div>
                   )}
-                </>
-              )}
-              <div>
-                <span className="text-sm font-medium text-navy-700">Fecha de emisión:</span>
-                <p className="text-navy-900">
-                  {new Date(inscripcion.factura.fechaEmision).toLocaleDateString("es-PY", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
-              </div>
-              {inscripcion.factura.fechaPago && (
-                <div>
-                  <span className="text-sm font-medium text-navy-700">Fecha de pago:</span>
-                  <p className="text-navy-900">
-                    {new Date(inscripcion.factura.fechaPago).toLocaleDateString("es-PY", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
                 </div>
               )}
-              <div>
-                <span className="text-sm font-medium text-navy-700">Cajero:</span>
-                <p className="text-navy-900">
+              <div className="grid grid-cols-2 gap-4 pt-2 border-t border-border">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Emisión</span>
+                  <p className="text-xs font-medium">
+                    {new Date(inscripcion.factura.fechaEmision).toLocaleDateString()}
+                  </p>
+                </div>
+                {inscripcion.factura.fechaPago && (
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Pago</span>
+                    <p className="text-xs font-medium">
+                      {new Date(inscripcion.factura.fechaPago).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
+              </div>
+              <div className="pt-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Cajero responsable</span>
+                <p className="text-xs font-medium">
                   {inscripcion.factura.cajero.nombre} {inscripcion.factura.cajero.apellido}
                 </p>
               </div>
             </div>
           </div>
         ) : (
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-lg font-semibold text-navy-900 mb-4">
-              Información de Factura
+          <div className="bg-muted/10 border border-dashed border-border rounded-lg p-6 flex flex-col items-center justify-center text-center">
+            <h2 className="text-lg font-semibold mb-2 opacity-50">
+              Sin Factura
             </h2>
-            <p className="text-navy-500">No se ha generado factura para esta inscripción.</p>
-            <p className="text-sm text-navy-400 mt-2">
-              La factura será generada por el cajero cuando se procese el pago.
+            <p className="text-muted-foreground text-sm max-w-[250px]">
+              No se ha generado factura para esta inscripción todavía.
+            </p>
+            <p className="text-[10px] text-muted-foreground/60 mt-4 uppercase tracking-widest font-bold">
+              Pendiente de Pago
             </p>
           </div>
         )}

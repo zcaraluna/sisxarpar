@@ -39,37 +39,37 @@ export default function MateriasList() {
   };
 
   if (loading) {
-    return <div className="text-center py-8">Cargando...</div>;
+    return <div className="text-center py-8 text-muted-foreground">Cargando...</div>;
   }
 
   return (
     <div>
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
-        <ul className="divide-y divide-navy-200">
+      <div className="bg-card border shadow-sm overflow-hidden sm:rounded-md">
+        <ul className="divide-y divide-border">
           {materias.length === 0 ? (
-            <li className="px-6 py-4 text-center text-navy-500">
+            <li className="px-6 py-4 text-center text-muted-foreground">
               No tienes materias asignadas
             </li>
           ) : (
             materias.map((mp) => (
-              <li key={mp.id} className="px-6 py-4 hover:bg-navy-50">
+              <li key={mp.id} className="px-6 py-4 hover:bg-muted/50 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-navy-900">
+                    <p className="text-sm font-semibold text-foreground">
                       {mp.materia.nombre}
                     </p>
-                    <div className="mt-2 flex items-center text-sm text-navy-500">
+                    <div className="mt-2 flex items-center text-sm text-muted-foreground">
                       <span>{mp.materia.curso.escuela.nombre}</span>
-                      <span className="mx-2">•</span>
+                      <span className="mx-2 text-border">•</span>
                       <span>{mp.materia.curso.nombre}</span>
-                      <span className="mx-2">•</span>
-                      <span>Código: {mp.materia.codigo}</span>
+                      <span className="mx-2 text-border">•</span>
+                      <span className="font-medium text-foreground">Código: {mp.materia.codigo}</span>
                     </div>
                   </div>
                   <div className="ml-4">
                     <Link
                       href={`/profesor/materia/${mp.materia.id}`}
-                      className="bg-navy-700 text-white px-4 py-2 rounded-lg hover:bg-navy-800 text-sm font-medium transition-colors"
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
                     >
                       Cargar Notas
                     </Link>

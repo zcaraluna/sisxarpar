@@ -95,61 +95,63 @@ export default function NuevoCertificadoPage() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-navy-900 mb-6">
+        <h1 className="text-3xl font-bold tracking-tight mb-6">
           Nuevo Certificado
         </h1>
 
-        <form onSubmit={handleSubmit} className="bg-white shadow rounded-lg p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-card border shadow-sm rounded-lg p-6 space-y-6">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            <div className="bg-destructive/15 border border-destructive text-destructive px-4 py-3 rounded text-sm">
               {error}
             </div>
           )}
 
-          <Select
-            label="Alumno"
-            value={formData.alumnoId}
-            onChange={(e) =>
-              setFormData({ ...formData, alumnoId: e.target.value })
-            }
-            options={[
-              { value: "", label: "Seleccione un alumno" },
-              ...alumnos.map((alumno) => ({
-                value: alumno.id,
-                label: `${alumno.nombre} ${alumno.apellido} - ${alumno.email}`,
-              })),
-            ]}
-            required
-          />
+          <div className="space-y-6">
+            <Select
+              label="Alumno"
+              value={formData.alumnoId}
+              onChange={(e) =>
+                setFormData({ ...formData, alumnoId: e.target.value })
+              }
+              options={[
+                { value: "", label: "Seleccione un alumno" },
+                ...alumnos.map((alumno) => ({
+                  value: alumno.id,
+                  label: `${alumno.nombre} ${alumno.apellido} - ${alumno.email}`,
+                })),
+              ]}
+              required
+            />
 
-          <Select
-            label="Curso"
-            value={formData.cursoId}
-            onChange={(e) =>
-              setFormData({ ...formData, cursoId: e.target.value })
-            }
-            options={[
-              { value: "", label: "Seleccione un curso" },
-              ...cursos.map((curso) => ({
-                value: curso.id,
-                label: `${curso.escuela.nombre} - ${curso.nombre}`,
-              })),
-            ]}
-            required
-          />
+            <Select
+              label="Curso"
+              value={formData.cursoId}
+              onChange={(e) =>
+                setFormData({ ...formData, cursoId: e.target.value })
+              }
+              options={[
+                { value: "", label: "Seleccione un curso" },
+                ...cursos.map((curso) => ({
+                  value: curso.id,
+                  label: `${curso.escuela.nombre} - ${curso.nombre}`,
+                })),
+              ]}
+              required
+            />
 
-          <Input
-            label="Fecha de Finalización"
-            type="date"
-            value={formData.fechaFinalizacion}
-            onChange={(e) =>
-              setFormData({ ...formData, fechaFinalizacion: e.target.value })
-            }
-            required
-          />
+            <Input
+              label="Fecha de Finalización"
+              type="date"
+              value={formData.fechaFinalizacion}
+              onChange={(e) =>
+                setFormData({ ...formData, fechaFinalizacion: e.target.value })
+              }
+              required
+            />
+          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-navy-700 mb-2">
+          <div className="pt-4 border-t border-border">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Observaciones
             </label>
             <textarea
@@ -157,15 +159,16 @@ export default function NuevoCertificadoPage() {
               onChange={(e) =>
                 setFormData({ ...formData, observaciones: e.target.value })
               }
-              className="w-full px-4 py-2 border border-navy-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent text-navy-900 placeholder:text-navy-400"
+              className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               rows={3}
+              placeholder="Notas adicionales..."
             />
           </div>
 
           <div className="flex justify-end space-x-4">
             <Button
               type="button"
-              variant="secondary"
+              variant="outline"
               onClick={() => router.back()}
             >
               Cancelar

@@ -60,13 +60,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   ].filter((item) => item.roles.includes(role));
 
   return (
-    <div className="min-h-screen bg-navy-50">
-      <nav className="bg-navy-900 text-white shadow-lg">
+    <div className="min-h-screen bg-background">
+      <nav className="border-b bg-card text-card-foreground shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <Link href="/dashboard" className="text-xl font-bold">
+                <Link href="/dashboard" className="text-xl font-bold tracking-tight">
                   Sis-ARPAR
                 </Link>
               </div>
@@ -75,11 +75,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                      pathname.startsWith(item.href)
-                        ? "border-white text-white"
-                        : "border-transparent text-navy-200 hover:text-white hover:border-navy-300"
-                    }`}
+                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors ${pathname.startsWith(item.href)
+                        ? "border-primary text-foreground"
+                        : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+                      }`}
                   >
                     {item.label}
                   </Link>
@@ -87,12 +86,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-navy-200">
+              <span className="text-sm text-muted-foreground">
                 {session.user?.name} - {roleLabels[role]}
               </span>
               <button
                 onClick={handleSignOut}
-                className="bg-navy-700 hover:bg-navy-600 px-4 py-2 rounded text-sm transition-colors"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-9 px-4 py-2"
               >
                 Cerrar Sesión
               </button>
@@ -100,7 +99,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
       </nav>
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-navy-50 min-h-[calc(100vh-4rem)]">
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 min-h-[calc(100vh-4rem)]">
         {children}
       </main>
     </div>

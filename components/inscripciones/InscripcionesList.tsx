@@ -63,13 +63,13 @@ export default function InscripcionesList() {
   };
 
   const estadoColors: Record<string, string> = {
-    PENDIENTE: "bg-yellow-100 text-yellow-800",
-    INSCRITO: "bg-green-100 text-green-800",
-    CANCELADO: "bg-red-100 text-red-800",
+    PENDIENTE: "bg-secondary text-secondary-foreground",
+    INSCRITO: "bg-primary text-primary-foreground",
+    CANCELADO: "bg-destructive text-destructive-foreground",
   };
 
   if (loading) {
-    return <div className="text-center py-8">Cargando...</div>;
+    return <div className="text-center py-8 text-muted-foreground">Cargando...</div>;
   }
 
   return (
@@ -78,7 +78,7 @@ export default function InscripcionesList() {
         <select
           value={estadoFilter}
           onChange={(e) => setEstadoFilter(e.target.value)}
-          className="px-4 py-2 border border-navy-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent text-navy-900 bg-white"
+          className="flex h-10 w-full sm:w-64 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <option value="">Todos los estados</option>
           <option value="PENDIENTE">Pendiente</option>
@@ -87,38 +87,37 @@ export default function InscripcionesList() {
         </select>
       </div>
 
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
-        <ul className="divide-y divide-navy-200">
+      <div className="bg-card border shadow-sm overflow-hidden sm:rounded-md">
+        <ul className="divide-y divide-border">
           {inscripciones.length === 0 ? (
-            <li className="px-6 py-4 text-center text-navy-500">
+            <li className="px-6 py-4 text-center text-muted-foreground">
               No hay inscripciones registradas
             </li>
           ) : (
             inscripciones.map((inscripcion) => (
-              <li key={inscripcion.id} className="px-6 py-4 hover:bg-navy-50">
+              <li key={inscripcion.id} className="px-6 py-4 hover:bg-muted/50 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center">
-                      <p className="text-sm font-medium text-navy-900">
+                      <p className="text-sm font-semibold text-foreground">
                         {inscripcion.alumno.nombre} {inscripcion.alumno.apellido}
                       </p>
                       <span
-                        className={`ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          estadoColors[inscripcion.estado]
-                        }`}
+                        className={`ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${estadoColors[inscripcion.estado]
+                          }`}
                       >
                         {estadoLabels[inscripcion.estado]}
                       </span>
                     </div>
-                    <div className="mt-2 flex items-center text-sm text-navy-500">
+                    <div className="mt-2 flex items-center text-sm text-muted-foreground">
                       <span>{inscripcion.curso.escuela.nombre}</span>
-                      <span className="mx-2">•</span>
+                      <span className="mx-2 text-border">•</span>
                       <span>{inscripcion.curso.nombre}</span>
-                      <span className="mx-2">•</span>
-                      <span>G. {inscripcion.curso.costo.toLocaleString()}</span>
+                      <span className="mx-2 text-border">•</span>
+                      <span className="font-semibold text-foreground">G. {inscripcion.curso.costo.toLocaleString()}</span>
                     </div>
                     {inscripcion.factura && (
-                      <div className="mt-1 text-xs text-navy-400">
+                      <div className="mt-1 text-xs text-muted-foreground/70">
                         Factura: {inscripcion.factura.numero} - {inscripcion.factura.estado}
                       </div>
                     )}
@@ -126,7 +125,7 @@ export default function InscripcionesList() {
                   <div className="ml-4">
                     <Link
                       href={`/encargado/${inscripcion.id}`}
-                      className="text-navy-600 hover:text-navy-900 text-sm font-medium"
+                      className="text-primary hover:underline text-sm font-medium"
                     >
                       Ver detalles
                     </Link>

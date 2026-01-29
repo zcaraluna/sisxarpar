@@ -43,42 +43,42 @@ export default function CertificadosList() {
   };
 
   if (loading) {
-    return <div className="text-center py-8">Cargando...</div>;
+    return <div className="text-center py-8 text-muted-foreground">Cargando...</div>;
   }
 
   return (
     <div>
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
-        <ul className="divide-y divide-navy-200">
+      <div className="bg-card border shadow-sm overflow-hidden sm:rounded-md">
+        <ul className="divide-y divide-border">
           {certificados.length === 0 ? (
-            <li className="px-6 py-4 text-center text-navy-500">
+            <li className="px-6 py-4 text-center text-muted-foreground">
               No hay certificados registrados
             </li>
           ) : (
             certificados.map((certificado) => (
-              <li key={certificado.id} className="px-6 py-4 hover:bg-navy-50">
+              <li key={certificado.id} className="px-6 py-4 hover:bg-muted/50 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center">
-                      <p className="text-sm font-medium text-navy-900">
+                      <p className="text-sm font-semibold text-foreground">
                         {certificado.alumno.nombre} {certificado.alumno.apellido}
                       </p>
                     </div>
-                    <div className="mt-2 flex items-center text-sm text-navy-500">
+                    <div className="mt-2 flex items-center text-sm text-muted-foreground">
                       <span>{certificado.curso.escuela.nombre}</span>
-                      <span className="mx-2">•</span>
+                      <span className="mx-2 text-border">•</span>
                       <span>{certificado.curso.nombre}</span>
-                      <span className="mx-2">•</span>
-                      <span>Promedio: {Number(certificado.promedio).toFixed(2)}</span>
+                      <span className="mx-2 text-border">•</span>
+                      <span className="font-medium text-foreground">Promedio: {Number(certificado.promedio).toFixed(2)}</span>
                     </div>
-                    <div className="mt-1 text-xs text-navy-400">
+                    <div className="mt-1 text-xs text-muted-foreground/70">
                       Certificado: {certificado.numero}
                     </div>
                   </div>
                   <div className="ml-4">
                     <Link
                       href={`/jefe-estudios/${certificado.id}`}
-                      className="text-navy-600 hover:text-navy-900 text-sm font-medium"
+                      className="text-primary hover:underline text-sm font-medium"
                     >
                       Ver detalles
                     </Link>

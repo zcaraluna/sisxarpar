@@ -84,46 +84,43 @@ export default function AlumnoDashboard() {
   };
 
   const estadoColors: Record<string, string> = {
-    PENDIENTE: "bg-yellow-100 text-yellow-800",
-    INSCRITO: "bg-green-100 text-green-800",
-    CANCELADO: "bg-red-100 text-red-800",
+    PENDIENTE: "bg-secondary text-secondary-foreground",
+    INSCRITO: "bg-primary text-primary-foreground",
+    CANCELADO: "bg-destructive text-destructive-foreground",
   };
 
   if (loading) {
-    return <div className="text-center py-8">Cargando...</div>;
+    return <div className="text-center py-8 text-muted-foreground">Cargando...</div>;
   }
 
   return (
     <div>
-      <div className="border-b border-navy-200 mb-6">
+      <div className="border-b border-border mb-6">
         <nav className="-mb-px flex space-x-8">
           <button
             onClick={() => setActiveTab("inscripciones")}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === "inscripciones"
-                ? "border-navy-500 text-navy-600"
-                : "border-transparent text-navy-500 hover:text-navy-700 hover:border-navy-300"
-            }`}
+            className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === "inscripciones"
+                ? "border-primary text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+              }`}
           >
             Inscripciones
           </button>
           <button
             onClick={() => setActiveTab("notas")}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === "notas"
-                ? "border-navy-500 text-navy-600"
-                : "border-transparent text-navy-500 hover:text-navy-700 hover:border-navy-300"
-            }`}
+            className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === "notas"
+                ? "border-primary text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+              }`}
           >
             Notas
           </button>
           <button
             onClick={() => setActiveTab("certificados")}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === "certificados"
-                ? "border-navy-500 text-navy-600"
-                : "border-transparent text-navy-500 hover:text-navy-700 hover:border-navy-300"
-            }`}
+            className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === "certificados"
+                ? "border-primary text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+              }`}
           >
             Certificados
           </button>
@@ -131,10 +128,10 @@ export default function AlumnoDashboard() {
       </div>
 
       {activeTab === "inscripciones" && (
-        <div className="bg-white shadow overflow-hidden sm:rounded-md">
-          <ul className="divide-y divide-navy-200">
+        <div className="bg-card border shadow-sm overflow-hidden sm:rounded-md">
+          <ul className="divide-y divide-border">
             {inscripciones.length === 0 ? (
-              <li className="px-6 py-4 text-center text-navy-500">
+              <li className="px-6 py-4 text-center text-muted-foreground">
                 No tienes inscripciones
               </li>
             ) : (
@@ -143,19 +140,18 @@ export default function AlumnoDashboard() {
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <div className="flex items-center">
-                        <p className="text-sm font-medium text-navy-900">
+                        <p className="text-sm font-medium text-foreground">
                           {inscripcion.curso.escuela.nombre} - {inscripcion.curso.nombre}
                         </p>
                         <span
-                          className={`ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            estadoColors[inscripcion.estado]
-                          }`}
+                          className={`ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${estadoColors[inscripcion.estado]
+                            }`}
                         >
                           {estadoLabels[inscripcion.estado]}
                         </span>
                       </div>
                       {inscripcion.factura && (
-                        <div className="mt-2 text-sm text-navy-500">
+                        <div className="mt-2 text-sm text-muted-foreground">
                           Factura: {inscripcion.factura.numero} - Estado: {inscripcion.factura.estado} - Monto: G. {inscripcion.factura.monto.toLocaleString()}
                         </div>
                       )}
@@ -169,10 +165,10 @@ export default function AlumnoDashboard() {
       )}
 
       {activeTab === "notas" && (
-        <div className="bg-white shadow overflow-hidden sm:rounded-md">
-          <ul className="divide-y divide-navy-200">
+        <div className="bg-card border shadow-sm overflow-hidden sm:rounded-md">
+          <ul className="divide-y divide-border">
             {notas.length === 0 ? (
-              <li className="px-6 py-4 text-center text-navy-500">
+              <li className="px-6 py-4 text-center text-muted-foreground">
                 No tienes notas registradas
               </li>
             ) : (
@@ -180,15 +176,15 @@ export default function AlumnoDashboard() {
                 <li key={nota.id} className="px-6 py-4">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-navy-900">
+                      <p className="text-sm font-medium text-foreground">
                         {nota.materia.nombre}
                       </p>
-                      <p className="text-xs text-navy-500 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {nota.materia.curso.nombre} - Período: {nota.periodo}
                       </p>
                     </div>
                     <div className="ml-4">
-                      <span className="text-lg font-semibold text-navy-900">
+                      <span className="text-lg font-semibold text-foreground">
                         {Number(nota.calificacion).toFixed(2)}
                       </span>
                     </div>
@@ -201,10 +197,10 @@ export default function AlumnoDashboard() {
       )}
 
       {activeTab === "certificados" && (
-        <div className="bg-white shadow overflow-hidden sm:rounded-md">
-          <ul className="divide-y divide-navy-200">
+        <div className="bg-card border shadow-sm overflow-hidden sm:rounded-md">
+          <ul className="divide-y divide-border">
             {certificados.length === 0 ? (
-              <li className="px-6 py-4 text-center text-navy-500">
+              <li className="px-6 py-4 text-center text-muted-foreground">
                 No tienes certificados
               </li>
             ) : (
@@ -212,18 +208,18 @@ export default function AlumnoDashboard() {
                 <li key={certificado.id} className="px-6 py-4">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-navy-900">
+                      <p className="text-sm font-medium text-foreground">
                         {certificado.curso.escuela.nombre} - {certificado.curso.nombre}
                       </p>
-                      <div className="mt-2 text-sm text-navy-500">
+                      <div className="mt-2 text-sm text-muted-foreground">
                         Certificado: {certificado.numero} - Promedio: {Number(certificado.promedio).toFixed(2)}
                       </div>
-                      <div className="mt-1 text-xs text-navy-400">
+                      <div className="mt-1 text-xs text-muted-foreground/70">
                         Emitido: {new Date(certificado.fechaEmision).toLocaleDateString()}
                       </div>
                     </div>
                     <div className="ml-4">
-                      <button className="text-navy-600 hover:text-navy-900 text-sm font-medium">
+                      <button className="text-primary hover:underline text-sm font-medium">
                         Descargar
                       </button>
                     </div>

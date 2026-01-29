@@ -121,35 +121,35 @@ export default function FacturarPage() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-navy-900 mb-6">
+        <h1 className="text-3xl font-bold tracking-tight mb-6">
           Generar Factura
         </h1>
 
-        <div className="bg-white shadow rounded-lg p-6 mb-6">
-          <h2 className="text-lg font-semibold text-navy-900 mb-4">
+        <div className="bg-card border shadow-sm rounded-lg p-6 mb-6">
+          <h2 className="text-lg font-semibold mb-4 text-foreground">
             Información de la Inscripción
           </h2>
-          <div className="space-y-2 text-sm">
+          <div className="space-y-2 text-sm text-muted-foreground">
             <p>
-              <span className="font-medium">Alumno:</span> {inscripcion.alumno.nombre}{" "}
+              <span className="font-medium text-foreground">Alumno:</span> {inscripcion.alumno.nombre}{" "}
               {inscripcion.alumno.apellido}
             </p>
             <p>
-              <span className="font-medium">Escuela:</span> {inscripcion.curso.escuela.nombre}
+              <span className="font-medium text-foreground">Escuela:</span> {inscripcion.curso.escuela.nombre}
             </p>
             <p>
-              <span className="font-medium">Curso:</span> {inscripcion.curso.nombre}
+              <span className="font-medium text-foreground">Curso:</span> {inscripcion.curso.nombre}
             </p>
             <p>
-              <span className="font-medium">Costo del curso:</span> G.{" "}
+              <span className="font-medium text-foreground">Costo del curso:</span> G.{" "}
               {inscripcion.curso.costo.toLocaleString()}
             </p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white shadow rounded-lg p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-card border shadow-sm rounded-lg p-6 space-y-6">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            <div className="bg-destructive/15 border border-destructive text-destructive px-4 py-3 rounded text-sm">
               {error}
             </div>
           )}
@@ -180,7 +180,7 @@ export default function FacturarPage() {
           />
 
           {formData.tipoFacturacion === "TERCERO" && (
-            <>
+            <div className="space-y-4 pt-4 border-t border-border">
               <Input
                 label="Nombre del Tercero"
                 value={formData.nombreTercero}
@@ -205,11 +205,11 @@ export default function FacturarPage() {
                 }
                 required
               />
-            </>
+            </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-navy-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Observaciones
             </label>
             <textarea
@@ -217,15 +217,16 @@ export default function FacturarPage() {
               onChange={(e) =>
                 setFormData({ ...formData, observaciones: e.target.value })
               }
-              className="w-full px-4 py-2 border border-navy-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent text-navy-900 placeholder:text-navy-400"
+              className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               rows={3}
+              placeholder="Notas adicionales..."
             />
           </div>
 
           <div className="flex justify-end space-x-4">
             <Button
               type="button"
-              variant="secondary"
+              variant="outline"
               onClick={() => router.back()}
             >
               Cancelar

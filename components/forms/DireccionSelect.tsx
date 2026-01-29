@@ -82,45 +82,66 @@ export default function DireccionSelect({
   const customStyles = {
     control: (base: any, state: any) => ({
       ...base,
+      backgroundColor: "hsl(var(--background))",
       borderColor: error
-        ? "#ef4444"
+        ? "hsl(var(--destructive))"
         : state.isFocused
-        ? "#1e3a8a"
-        : "#cbd5e1",
+          ? "hsl(var(--ring))"
+          : "hsl(var(--input))",
       boxShadow: state.isFocused
-        ? "0 0 0 2px rgba(30, 58, 138, 0.2)"
+        ? "0 0 0 1px hsl(var(--ring))"
         : "none",
+      borderRadius: "0.375rem",
+      minHeight: "2.5rem",
       "&:hover": {
-        borderColor: error ? "#ef4444" : "#1e3a8a",
+        borderColor: error ? "hsl(var(--destructive))" : "hsl(var(--ring))",
       },
     }),
     option: (base: any, state: any) => ({
       ...base,
       backgroundColor: state.isSelected
-        ? "#1e3a8a"
+        ? "hsl(var(--primary))"
         : state.isFocused
-        ? "#e0e7ff"
-        : "white",
-      color: state.isSelected ? "white" : "#0a1c2e",
+          ? "hsl(var(--accent))"
+          : "transparent",
+      color: state.isSelected
+        ? "hsl(var(--primary-foreground))"
+        : "hsl(var(--foreground))",
+      cursor: "pointer",
       "&:active": {
-        backgroundColor: "#1e3a8a",
-        color: "white",
+        backgroundColor: "hsl(var(--primary))",
+        color: "hsl(var(--primary-foreground))",
       },
     }),
     singleValue: (base: any) => ({
       ...base,
-      color: "#0a1c2e",
+      color: "hsl(var(--foreground))",
     }),
     placeholder: (base: any) => ({
       ...base,
-      color: "#64748b",
+      color: "hsl(var(--muted-foreground))",
+    }),
+    loadingIndicator: (base: any) => ({
+      ...base,
+      color: "hsl(var(--muted-foreground))",
+    }),
+    dropdownIndicator: (base: any) => ({
+      ...base,
+      color: "hsl(var(--muted-foreground))",
+    }),
+    menu: (base: any) => ({
+      ...base,
+      backgroundColor: "hsl(var(--popover))",
+      border: "1px solid hsl(var(--border))",
+      borderRadius: "0.375rem",
+      boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
     }),
   };
 
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-navy-700 mb-2">
+        <label className="block text-sm font-semibold mb-2">
           Departamento
         </label>
         <Select
@@ -141,13 +162,12 @@ export default function DireccionSelect({
           isLoading={loadingDeptos}
           isClearable
           styles={customStyles}
-          className="text-navy-900"
         />
-        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-1 text-sm text-destructive">{error}</p>}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-navy-700 mb-2">
+        <label className="block text-sm font-semibold mb-2">
           Ciudad
         </label>
         <Select
@@ -168,12 +188,11 @@ export default function DireccionSelect({
           isDisabled={!value.departamento}
           isClearable
           styles={customStyles}
-          className="text-navy-900"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-navy-700 mb-2">
+        <label className="block text-sm font-semibold mb-2">
           Barrio / Calles / Referencias
         </label>
         <input
@@ -186,7 +205,7 @@ export default function DireccionSelect({
             })
           }
           placeholder="Ej: Barrio Centro, Calle Principal 123"
-          className="w-full px-4 py-2 border border-navy-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent text-navy-900 placeholder:text-navy-400"
+          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
     </div>

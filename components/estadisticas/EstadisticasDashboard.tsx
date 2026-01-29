@@ -108,23 +108,23 @@ export default function EstadisticasDashboard() {
 
   const handleExportarPDF = async () => {
     if (!estadisticas) return;
-    
+
     try {
       const { jsPDF } = await import("jspdf");
       const doc = new jsPDF();
-      
+
       doc.setFontSize(16);
       doc.text("Reporte de Ingresos - Sis-ARPAR", 14, 20);
-      
+
       doc.setFontSize(12);
       doc.text(`Total de Ingresos: G. ${estadisticas.totalIngresos.toLocaleString()}`, 14, 35);
       doc.text(`Total de Facturas: ${estadisticas.totalFacturas}`, 14, 42);
-      
+
       let yPos = 55;
       doc.setFontSize(10);
       doc.text("Ingresos por Escuela:", 14, yPos);
       yPos += 7;
-      
+
       Object.entries(estadisticas.ingresosPorEscuela).forEach(([escuela, monto]) => {
         doc.text(`${escuela}: G. ${Number(monto).toLocaleString()}`, 20, yPos);
         yPos += 7;
@@ -133,7 +133,7 @@ export default function EstadisticasDashboard() {
           yPos = 20;
         }
       });
-      
+
       doc.save(`reporte-ingresos-${new Date().toISOString().split("T")[0]}.pdf`);
     } catch (error) {
       console.error("Error al exportar PDF:", error);
@@ -143,12 +143,12 @@ export default function EstadisticasDashboard() {
 
   const handleExportarExcel = async () => {
     if (!estadisticas) return;
-    
+
     try {
       const ExcelJS = await import("exceljs");
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet("Ingresos");
-      
+
       // Encabezados
       worksheet.columns = [
         { header: "Número de Factura", key: "numero", width: 20 },
@@ -158,7 +158,7 @@ export default function EstadisticasDashboard() {
         { header: "Tipo", key: "tipo", width: 15 },
         { header: "Fecha de Pago", key: "fechaPago", width: 20 },
       ];
-      
+
       // Datos
       estadisticas.facturas.forEach((factura) => {
         worksheet.addRow({
@@ -170,7 +170,7 @@ export default function EstadisticasDashboard() {
           fechaPago: factura.fechaPago ? new Date(factura.fechaPago).toLocaleDateString() : "",
         });
       });
-      
+
       // Estilo de encabezados
       worksheet.getRow(1).font = { bold: true };
       worksheet.getRow(1).fill = {
@@ -179,14 +179,14 @@ export default function EstadisticasDashboard() {
         fgColor: { argb: "FF1e3a8a" },
       };
       worksheet.getRow(1).font = { bold: true, color: { argb: "FFFFFFFF" } };
-      
+
       // Resumen
       const summaryRow = estadisticas.facturas.length + 3;
       worksheet.getCell(`A${summaryRow}`).value = "Total:";
       worksheet.getCell(`A${summaryRow}`).font = { bold: true };
       worksheet.getCell(`D${summaryRow}`).value = estadisticas.totalIngresos;
       worksheet.getCell(`D${summaryRow}`).font = { bold: true };
-      
+
       // Generar archivo
       const buffer = await workbook.xlsx.writeBuffer();
       const blob = new Blob([buffer], {
@@ -238,13 +238,13 @@ export default function EstadisticasDashboard() {
     }))
     .sort((a, b) => a.fecha.localeCompare(b.fecha));
 
-  const COLORS = ["#1e3a8a", "#3b82f6", "#60a5fa", "#93c5fd"];
+  const COLORS = ["#18181b", "#27272a", "#3f3f46", "#52525b"];
 
   return (
     <div className="space-y-6">
       {/* Filtros */}
-      <div className="bg-white shadow rounded-lg p-6">
-        <h2 className="text-lg font-semibold text-navy-900 mb-4">Filtros</h2>
+      <div className="bg-card border shadow-sm rounded-lg p-6">
+        <h2 className="text-lg font-semibold mb-4">Filtros</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Input
             label="Fecha Inicio"
@@ -305,19 +305,19 @@ export default function EstadisticasDashboard() {
 
       {/* Resumen */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-navy-900 mb-2">
+        <div className="bg-card border shadow-sm rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-2">
             Total de Ingresos
           </h3>
-          <p className="text-3xl font-bold text-navy-700">
+          <p className="text-3xl font-bold">
             G. {estadisticas.totalIngresos.toLocaleString()}
           </p>
         </div>
-        <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-navy-900 mb-2">
+        <div className="bg-card border shadow-sm rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-2">
             Total de Facturas
           </h3>
-          <p className="text-3xl font-bold text-navy-700">
+          <p className="text-3xl font-bold">
             {estadisticas.totalFacturas}
           </p>
         </div>
@@ -325,23 +325,26 @@ export default function EstadisticasDashboard() {
 
       {/* Gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-navy-900 mb-4">
+        <div className="bg-card border shadow-sm rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-4">
             Ingresos por Escuela
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={datosPorEscuela}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="value" fill="#1e3a8a" />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="name" fontSize={12} tick={{ fill: 'hsl(var(--muted-foreground))' }} />
+              <YAxis fontSize={12} tick={{ fill: 'hsl(var(--muted-foreground))' }} />
+              <Tooltip
+                contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', color: 'hsl(var(--foreground))' }}
+                itemStyle={{ color: 'hsl(var(--foreground))' }}
+              />
+              <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-navy-900 mb-4">
+        <div className="bg-card border shadow-sm rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-4">
             Ingresos por Tipo
           </h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -365,28 +368,33 @@ export default function EstadisticasDashboard() {
                   />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip
+                contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', color: 'hsl(var(--foreground))' }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
       </div>
 
-      <div className="bg-white shadow rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-navy-900 mb-4">
+      <div className="bg-card border shadow-sm rounded-lg p-6">
+        <h3 className="text-lg font-semibold mb-4">
           Tendencia de Ingresos
         </h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={datosPorFecha}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="fecha" />
-            <YAxis />
-            <Tooltip />
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+            <XAxis dataKey="fecha" fontSize={12} tick={{ fill: 'hsl(var(--muted-foreground))' }} />
+            <YAxis fontSize={12} tick={{ fill: 'hsl(var(--muted-foreground))' }} />
+            <Tooltip
+              contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', color: 'hsl(var(--foreground))' }}
+            />
             <Legend />
             <Line
               type="monotone"
               dataKey="monto"
-              stroke="#1e3a8a"
+              stroke="hsl(var(--primary))"
               strokeWidth={2}
+              dot={{ fill: 'hsl(var(--primary))' }}
             />
           </LineChart>
         </ResponsiveContainer>
@@ -394,10 +402,10 @@ export default function EstadisticasDashboard() {
 
       {/* Botones de exportación */}
       <div className="flex justify-end space-x-4">
-        <Button variant="secondary" onClick={handleExportarPDF}>
+        <Button variant="outline" onClick={handleExportarPDF}>
           Exportar PDF
         </Button>
-        <Button variant="secondary" onClick={handleExportarExcel}>
+        <Button variant="outline" onClick={handleExportarExcel}>
           Exportar Excel
         </Button>
       </div>

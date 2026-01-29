@@ -135,33 +135,33 @@ export default function MateriaNotasPage() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-navy-900 mb-6">Cargar Notas</h1>
+        <h1 className="text-3xl font-bold tracking-tight mb-6">Cargar Notas</h1>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-destructive/15 border border-destructive text-destructive px-4 py-3 rounded mb-4 text-sm">
             {error}
           </div>
         )}
 
-        <div className="bg-white shadow rounded-lg p-6 mb-6">
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-navy-700 mb-2">
-              Período
+        <div className="bg-card border shadow-sm rounded-lg p-6 mb-6">
+          <div className="max-w-xs">
+            <label className="block text-sm font-medium mb-2">
+              Período Escolar
             </label>
             <input
               type="text"
               value={periodo}
               onChange={(e) => setPeriodo(e.target.value)}
               placeholder="Ej: 2024-1"
-              className="px-4 py-2 border border-navy-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent text-navy-900 placeholder:text-navy-400"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
         </div>
 
-        <div className="bg-white shadow overflow-hidden sm:rounded-md">
-          <ul className="divide-y divide-navy-200">
+        <div className="bg-card border shadow-sm overflow-hidden sm:rounded-md">
+          <ul className="divide-y divide-border">
             {alumnos.length === 0 ? (
-              <li className="px-6 py-4 text-center text-navy-500">
+              <li className="px-6 py-4 text-center text-muted-foreground">
                 No hay alumnos inscritos en este curso
               </li>
             ) : (
@@ -171,15 +171,15 @@ export default function MateriaNotasPage() {
                 const calificacion = calificaciones[alumno.id] || nota?.calificacion.toString() || "";
 
                 return (
-                  <li key={alumno.id} className="px-6 py-4">
-                    <div className="flex items-center justify-between">
+                  <li key={alumno.id} className="px-6 py-4 hover:bg-muted/30 transition-colors">
+                    <div className="flex items-center justify-between gap-4">
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-navy-900">
+                        <p className="text-sm font-semibold text-foreground">
                           {alumno.nombre} {alumno.apellido}
                         </p>
                         {alumno.cedula && (
-                          <p className="text-xs text-navy-500">
-                            Cédula: {alumno.cedula}
+                          <p className="text-xs text-muted-foreground font-mono">
+                            ID: {alumno.cedula}
                           </p>
                         )}
                       </div>
@@ -197,7 +197,7 @@ export default function MateriaNotasPage() {
                                 [alumno.id]: e.target.value,
                               }))
                             }
-                            className="w-20 px-2 py-1 border border-navy-300 rounded focus:ring-2 focus:ring-navy-500 focus:border-transparent text-navy-900 placeholder:text-navy-400"
+                            className="w-24 flex h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                             placeholder="0-100"
                           />
                           <Button
@@ -208,13 +208,12 @@ export default function MateriaNotasPage() {
                               )
                             }
                             disabled={saving || !calificacion}
-                            variant="primary"
                           >
                             Guardar
                           </Button>
                         </div>
                         {nota && (
-                          <span className="text-xs text-navy-500">
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
                             Guardado
                           </span>
                         )}
