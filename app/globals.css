@@ -2,67 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #0a1c2e;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a1c2e;
-    --foreground: #f0f4f8;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-/* Estilos para react-select */
+/* Estilos para react-select - Adaptados al tema Zinc */
 .react-select-container {
-  color: #0a1c2e;
+  color: hsl(var(--foreground));
 }
 
 .react-select__control {
-  border-color: #cbd5e1 !important;
+  background-color: hsl(var(--background)) !important;
+  border-color: hsl(var(--input)) !important;
   min-height: 42px;
 }
 
 .react-select__control:hover {
-  border-color: #1e3a8a !important;
+  border-color: hsl(var(--ring)) !important;
 }
 
 .react-select__control--is-focused {
-  border-color: #1e3a8a !important;
-  box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2) !important;
+  border-color: hsl(var(--ring)) !important;
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2) !important;
 }
 
 .react-select__single-value {
-  color: #0a1c2e !important;
+  color: hsl(var(--foreground)) !important;
 }
 
 .react-select__placeholder {
-  color: #64748b !important;
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.react-select__menu {
+  background-color: hsl(var(--popover)) !important;
+  border: 1px solid hsl(var(--border)) !important;
 }
 
 .react-select__option {
-  color: #0a1c2e !important;
+  color: hsl(var(--foreground)) !important;
+  background-color: transparent !important;
 }
 
 .react-select__option--is-focused {
-  background-color: #e0e7ff !important;
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
 }
 
 .react-select__option--is-selected {
-  background-color: #1e3a8a !important;
-  color: white !important;
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
 }
 
